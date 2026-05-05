@@ -1,18 +1,28 @@
 void main() {
-    System.out.println("Main Start");
-    int n = 6, m = 6;
-    int tries = 1;
-    ChessBoard Board = new ChessBoard(n, m, 1, 1);
+    System.out.println("Main Start.");
 
-    //System.out.println(Board);
-    //Board.displayAvailable(1,1);
-    //Board.displayAvailable(3,2);
-    //Board.displayKnightPos();
+    // Get attributes
+    int n, m, x, y;
+    int tries = 1;
+    Scanner userInput = new Scanner(System.in);
+    System.out.print("Enter Width : ");
+    n = userInput.nextInt();
+    System.out.print("Enter Height : ");
+    m = userInput.nextInt();
+    System.out.print("Enter Starting x : ");
+    x = userInput.nextInt();
+    System.out.print("Enter Starting y : ");
+    y = userInput.nextInt();
+
+    System.out.println("Warnsdorfing...");
+
+    ChessBoard Board = new ChessBoard(n, m, x, y);
 
     while (!Board.warnsdorf(false)) {
         //Board.displayNonVisited();
-        Board = new ChessBoard(n, m, 1, 1);
+        Board = new ChessBoard(n, m, x, y);
         tries++;
     }
-    System.out.println("Warnsdorf Knight's tour complete on a "+n+"x"+m+" board with "+tries+" tries.");
+    System.out.println("Warnsdorf Knight's tour complete on a "+n+"x"+m+" board " +
+            "at starting position " +x+", "+y+" with "+tries+" tries.");
 }
