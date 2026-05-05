@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Random;
 
 public class ChessQuare implements Comparable<ChessQuare> {
     // Main Class used to interpret square accessibility and visited-ness
@@ -32,6 +33,8 @@ public class ChessQuare implements Comparable<ChessQuare> {
     public void visits() {this.visited = true;}
     public boolean getVisited() {return this.visited;}
 
+    public String shortPos(){return this.posX + ", " + this.posY;} // Short Position Display
+
     // x/y getters
     public int getPosX() {return this.posX;}
     public int getPosY() {return this.posY;}
@@ -39,7 +42,8 @@ public class ChessQuare implements Comparable<ChessQuare> {
     // AvailableAdj functions
     public void addVailable(ChessQuare Adj) {this.AvailableAdj.add(Adj);}
     public int getVailableNbr() {return this.AvailableAdj.size();}
-    public ChessQuare removeAdj() {return this.AvailableAdj.removeFirst();}
+    public ChessQuare removeAdj(int index) {return this.AvailableAdj.remove(index);}
+    public void removeVisited() {this.AvailableAdj.removeIf(ChessQuare::getVisited);}
 
     // Comparison function based on len of AvailableAdj
     @Override
@@ -49,8 +53,26 @@ public class ChessQuare implements Comparable<ChessQuare> {
 
     // Removal and return of the element with lowest available adjacent squares
     public ChessQuare chooseSquare() {
+        // This assumes AvailableAdj is Not empty
+        // If there is only one available Adjacent square, move to it
+        if (this.AvailableAdj.size() == 1) {return removeAdj(0);}
+
+        // Else, get the AvAdj with lowest AvAdj number
         this.AvailableAdj.sort(null);
-        return removeAdj(); // This will remove the first element of the sorted list
+
+        // If there is more than 1 Square with the minimal number, choose randomly between them
+        int nbrMin = 0;
+        while (nbrMin < this.AvailableAdj.size() &&
+                this.AvailableAdj.get(nbrMin).getVisited() == this.AvailableAdj.getFirst().getVisited())
+        {nbrMin++;}
+        int toRemove;
+        if (nbrMin > 1) {
+            Random randomNbr = new Random();
+            toRemove = randomNbr.nextInt(nbrMin);
+        }
+        else {toRemove = 0;}
+
+        return removeAdj(toRemove); // This will remove an element with minimal Available Adj
     }
 
     public void displayAdj() {

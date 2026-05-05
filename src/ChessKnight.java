@@ -14,6 +14,8 @@ public class ChessKnight {
         return "Knight :\nPosition : " + this.posX + ", " +this.posY;
     }
 
+    public String shortKnightPos(){return this.posX + ", " + this.posY;} // Short Position Display
+
     public void move(int x, int y) {
         // PositionSetter
         this.posX = x; this.posY = y;

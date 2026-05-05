@@ -74,8 +74,66 @@ public class ChessBoard {
     }
 
     public void displayKnightPos() {
-        System.out.println("Knight is at Position : " + this.Knight.getPosX() + ", " + this.Knight.getPosY());
+        System.out.println("Knight is at Position : " + this.Knight.shortKnightPos());
     }
 
+    public boolean allVisited() {
+        // Verifies if all squares have been visited
+        for (ChessQuare[] row : this.Squares) {
+            for (ChessQuare Curr : row) {
+                if (!Curr.getVisited()) {return false;}
+            }
+        }
+        return true;
+    }
 
+    public void displayNonVisited() {
+        StringBuilder nonVis = new StringBuilder("Non Visited : ");
+        for (ChessQuare[] row : this.Squares) {
+            for (ChessQuare Curr : row) {
+                if (!Curr.getVisited()) {nonVis.append(Curr.shortPos()).append(" ; ");}
+            }
+        }
+        System.out.println(nonVis);
+    }
+
+    // ---------- Warnsdorf -----------
+
+    private ChessQuare step(ChessQuare Curr) {
+        // Uses Warnsdorf to make the knight take a step in the chessboard
+        // First, make the choice of where to go depending on the current step
+        ChessQuare Next = Curr.chooseSquare();
+        // Move the Knight, set new square to visited, remove already visited from curr AvailableAdj
+        Next.visits();
+        Next.removeVisited();
+        Knight.move(Next.getPosX(), Next.getPosY());
+        return Next;
+    }
+
+    public boolean warnsdorf(boolean displays) {
+        // Implementation of Warnsdorf's Rule :
+        // Always go to the square with the lowest number of available adjacent Squares.
+        // Starts on the Knight's first space
+        ChessQuare Position = this.Squares[this.Knight.getPosX()-1][this.Knight.getPosY()-1];
+        if (displays) {
+            System.out.println("Starting at position :" + this.Knight.shortKnightPos());
+        }
+        // As long as there is movement possible, take a step
+        while (Position.getVailableNbr() > 0) {
+            Position = this.step(Position);
+            if (displays) {
+                System.out.println("Moved to :" + this.Knight.shortKnightPos());
+            }
+        }
+        if (displays) {
+            System.out.println("Tour finished. ");
+            if (this.allVisited()) {System.out.println("All Squares have been visited.");}
+            else {System.out.println("All Squares have NOT been visited.");}
+        }
+        return this.allVisited();
+    }
+
+    public boolean warnsdorf() {
+        return warnsdorf(true);
+    }
 }
