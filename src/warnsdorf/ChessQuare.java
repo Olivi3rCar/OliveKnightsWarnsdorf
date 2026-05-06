@@ -1,9 +1,11 @@
+package warnsdorf;
+
 import java.util.ArrayList;
 import java.util.Random;
 
 public class ChessQuare implements Comparable<ChessQuare> {
     // Main Class used to interpret square accessibility and visited-ness
-    // Contained in ChessBoard class
+    // Contained in warnsdorf.ChessBoard class
 
     private int posX, posY; // Position of the square, from 1,1 to n,m
     private boolean visited; // Self-explanatory
@@ -12,7 +14,7 @@ public class ChessQuare implements Comparable<ChessQuare> {
     // adjacent (reachable by knight movement) squares.
     private boolean isWhite; // Attribute of the color of the square on the chessboard
 
-    ChessQuare(int x, int y) {
+    public ChessQuare(int x, int y) {
         // Main constructor method
         this.posX = x; this.posY = y;
         this.visited = false; // Every square starts unvisited

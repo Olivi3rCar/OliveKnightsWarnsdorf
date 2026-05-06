@@ -1,12 +1,14 @@
+package warnsdorf;
+
 public class ChessBoard {
-    // Main Class used to represent and build ChessQuare objects,
+    // Main Class used to represent and build warnsdorf.ChessQuare objects,
     // Calculate and Interpret the knight's movements
 
     private int width, height; // width and height of the chessboard in number of squares
     private ChessQuare[][] Squares; // Main Array containing all squares (non-resizeable)
     private ChessKnight Knight;
 
-    ChessBoard(int n, int m, int x, int y) {
+    public ChessBoard(int n, int m, int x, int y) {
         // Main constructor and Instantiator
 
         // Squares Instantiation

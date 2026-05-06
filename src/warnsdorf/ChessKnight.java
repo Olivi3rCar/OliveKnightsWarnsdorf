@@ -1,9 +1,11 @@
+package warnsdorf;
+
 public class ChessKnight {
     // Main class used to interpret the movements and the Warnsdorf algorithm
 
     private int posX, posY; // Position of the Knight
 
-    ChessKnight(int x, int y) {
+    public ChessKnight(int x, int y) {
         // Main constructor
         this.posX = x; this.posY = y;
     }
