@@ -7,7 +7,7 @@ public class Main {
         System.out.println("warnsdorf.Main Start.");
 
         // Get attributes
-        int n, m, x, y;
+        int n, m, x, y, c;
         int tries = 1;
         Scanner userInput = new Scanner(System.in);
         System.out.print("Enter Width : ");
@@ -18,12 +18,14 @@ public class Main {
         x = userInput.nextInt();
         System.out.print("Enter Starting y : ");
         y = userInput.nextInt();
+        System.out.print("Enter Choicetype (0-default, 1-random): ");
+        c = userInput.nextInt();
 
         System.out.println("Warnsdorfing...");
 
         ChessBoard Board = new ChessBoard(n, m, x, y);
 
-        while (!Board.warnsdorf(false)) {
+        while (!Board.warnsdorf(c)) {
             //Board.displayNonVisited();
             Board = new ChessBoard(n, m, x, y);
             tries++;

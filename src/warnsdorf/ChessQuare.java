@@ -53,8 +53,20 @@ public class ChessQuare implements Comparable<ChessQuare> {
         return Integer.compare(this.getVailableNbr(),other.getVailableNbr());
     }
 
+    public int chooseMin(int minSize, int choiceType) {
+        // Return the choice made between 2 or more squares
+        // To be called only if more than 1 square has the minimal getVailableNbr
+        switch (choiceType) {
+            case 1 :
+                // Random
+                Random randomNbr = new Random();
+                return randomNbr.nextInt(minSize);
+
+            default : return 0;
+        }
+    }
     // Removal and return of the element with lowest available adjacent squares
-    public ChessQuare chooseSquare() {
+    public ChessQuare chooseSquare(int choiceType) {
         // This assumes AvailableAdj is Not empty
         // If there is only one available Adjacent square, move to it
         if (this.AvailableAdj.size() == 1) {return removeAdj(0);}
@@ -69,8 +81,8 @@ public class ChessQuare implements Comparable<ChessQuare> {
         {nbrMin++;}
         int toRemove;
         if (nbrMin > 1) {
-            Random randomNbr = new Random();
-            toRemove = randomNbr.nextInt(nbrMin);
+            toRemove = this.chooseMin(nbrMin, choiceType);
+            //System.out.println(toRemove);
         }
         else {toRemove = 0;}
 
