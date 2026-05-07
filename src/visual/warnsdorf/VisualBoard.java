@@ -2,15 +2,18 @@ package visual.warnsdorf;
 import warnsdorf.ChessBoard;
 import warnsdorf.ChessQuare;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
 
 public class VisualBoard extends ChessBoard{
 
     static BoardFrame frame;
     private VisualQuare[][] Vquares;
-    private int sqSize;
-    ImageIcon knightImage;
-    JLabel knightLabel;
+    private final int sqSize;
+    JLabel knightImage;
 
     public VisualBoard(int n, int m, int x, int y) {
         super(n, m, x, y);
@@ -28,15 +31,16 @@ public class VisualBoard extends ChessBoard{
             }
         }
 
-        knightLabel = new JLabel();
-        knightImage = new ImageIcon("knight.png");
-        knightLabel.setIcon(knightImage);
+        ImageIcon preImage = new ImageIcon("knight.png");
 
+        knightImage = new JLabel(preImage);
+
+
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-        Vquares[x][y].panel.add(knightLabel);
+        Vquares[x-1][y-1].panel.add(knightImage);
     }
 
-    @Override
     protected ChessQuare step(ChessQuare Curr, int choiceType) {
         // Uses Warnsdorf to make the knight take a step in the chessboard
         // First, make the choice of where to go depending on the current step

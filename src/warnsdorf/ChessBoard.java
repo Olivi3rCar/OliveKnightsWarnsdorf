@@ -1,6 +1,6 @@
 package warnsdorf;
 
-public abstract class ChessBoard {
+public class ChessBoard {
     // Main Class used to represent and build warnsdorf.ChessQuare objects,
     // Calculate and Interpret the knight's movements
 
@@ -142,6 +142,4 @@ public abstract class ChessBoard {
     public boolean warnsdorf() {
         return warnsdorf(0, false);
     }
-
-    protected abstract ChessQuare step(ChessQuare Curr, int choiceType);
 }

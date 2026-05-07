@@ -4,7 +4,7 @@ public class Main {
     static void main() {
         System.out.println("Visual Main Start");
 
-        VisualBoard Test = new VisualBoard(3, 4, 1, 1);
+        VisualBoard Test = new VisualBoard(5, 5, 1, 1);
         Test.warnsdorf(0, true);
     }
 }
