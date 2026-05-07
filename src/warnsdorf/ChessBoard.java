@@ -1,12 +1,12 @@
 package warnsdorf;
 
-public class ChessBoard {
+public abstract class ChessBoard {
     // Main Class used to represent and build warnsdorf.ChessQuare objects,
     // Calculate and Interpret the knight's movements
 
-    private int width, height; // width and height of the chessboard in number of squares
-    private ChessQuare[][] Squares; // Main Array containing all squares (non-resizeable)
-    private ChessKnight Knight;
+    protected int width, height; // width and height of the chessboard in number of squares
+    protected ChessQuare[][] Squares; // Main Array containing all squares (non-resizeable)
+    protected ChessKnight Knight;
 
     public ChessBoard(int n, int m, int x, int y) {
         // Main constructor and Instantiator
@@ -142,4 +142,6 @@ public class ChessBoard {
     public boolean warnsdorf() {
         return warnsdorf(0, false);
     }
+
+    protected abstract ChessQuare step(ChessQuare Curr, int choiceType);
 }

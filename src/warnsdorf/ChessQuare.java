@@ -7,18 +7,26 @@ public class ChessQuare implements Comparable<ChessQuare> {
     // Main Class used to interpret square accessibility and visited-ness
     // Contained in warnsdorf.ChessBoard class
 
-    private int posX, posY; // Position of the square, from 1,1 to n,m
-    private boolean visited; // Self-explanatory
-    private ArrayList<ChessQuare> AvailableAdj;
+    protected final int posX, posY; // Position of the square, from 1,1 to n,m
+    protected boolean visited; // Self-explanatory
+    protected final ArrayList<ChessQuare> AvailableAdj;
     // Resizeable list of available (non-visited),
     // adjacent (reachable by knight movement) squares.
-    private boolean isWhite; // Attribute of the color of the square on the chessboard
+    protected final boolean isWhite; // Attribute of the color of the square on the chessboard
 
     public ChessQuare(int x, int y) {
         // Main constructor method
         this.posX = x; this.posY = y;
         this.visited = false; // Every square starts unvisited
         this.isWhite = (x+y)%2==0; // Color is based on the parity of the position
+        this.AvailableAdj = new ArrayList<ChessQuare>();
+    }
+
+    public ChessQuare(ChessQuare other) {
+        // Copy constructor method
+        this.posX = other.posX; this.posY = other.posY;
+        this.visited = false; // Every square starts unvisited
+        this.isWhite = (other.posX+other.posY)%2==0; // Color is based on the parity of the position
         this.AvailableAdj = new ArrayList<ChessQuare>();
     }
 
@@ -100,5 +108,9 @@ public class ChessQuare implements Comparable<ChessQuare> {
                     Curr.getPosX() + ", " + Curr.getPosY() + " with " + Curr.getVailableNbr() + " Available Adjacent"
             );
         }
+    }
+
+    public boolean getWhite() {
+        return this.isWhite;
     }
 }

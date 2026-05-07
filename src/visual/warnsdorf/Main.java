@@ -5,6 +5,6 @@ public class Main {
         System.out.println("Visual Main Start");
 
         VisualBoard Test = new VisualBoard(3, 4, 1, 1);
-        Test.warnsdorf(0);
+        Test.warnsdorf(0, true);
     }
 }
