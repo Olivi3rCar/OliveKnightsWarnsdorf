@@ -101,7 +101,7 @@ public class ChessBoard {
 
     // ---------- Warnsdorf -----------
 
-    private ChessQuare step(ChessQuare Curr, int choiceType) {
+    protected ChessQuare step(ChessQuare Curr, int choiceType) {
         // Uses Warnsdorf to make the knight take a step in the chessboard
         // First, make the choice of where to go depending on the current step
         ChessQuare Next = Curr.chooseSquare(choiceType);
