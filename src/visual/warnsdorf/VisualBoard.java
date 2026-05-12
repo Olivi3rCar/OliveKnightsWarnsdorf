@@ -27,7 +27,6 @@ public class VisualBoard extends ChessBoard {
             }
         } else {
             frame = new BoardFrame();
-            frame.setAlwaysOnTop(true);
             // Fill the Array
             Vquares = new VisualQuare[n][m];
             for (int i = 0; i < n; i++) {
@@ -48,7 +47,6 @@ public class VisualBoard extends ChessBoard {
             knightImage = new JLabel(preImage);
         }
 
-        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         Vquares[x - 1][y - 1].panel.add(knightImage);
 

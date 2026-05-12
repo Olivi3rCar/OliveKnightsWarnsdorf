@@ -14,6 +14,8 @@ public class BoardFrame extends JFrame {
         this.setIconImage(Img.getImage());
         this.getContentPane().setBackground(new Color(0xcccccc));
         this.setLayout(null);
+        this.setLocationRelativeTo(null);
+        this.setAlwaysOnTop(true);
     }
 
     public void addPanel(VisualQuare Vquare) {
