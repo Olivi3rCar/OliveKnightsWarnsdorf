@@ -55,6 +55,15 @@ public class ChessQuare implements Comparable<ChessQuare> {
     public ChessQuare removeAdj(int index) {return this.AvailableAdj.remove(index);}
     public void removeVisited() {this.AvailableAdj.removeIf(ChessQuare::getVisited);}
 
+    public int getNextLevelAvailableNbrSum() {
+        // Useful for Pohl's Method
+        int sum = 0;
+        for (ChessQuare chessQuare : this.AvailableAdj) {
+            sum += chessQuare.getVailableNbr();
+        }
+        return sum;
+    }
+
     // Comparison function based on len of AvailableAdj
     @Override
     public int compareTo(ChessQuare other) {
@@ -69,7 +78,18 @@ public class ChessQuare implements Comparable<ChessQuare> {
                 // Random
                 Random randomNbr = new Random();
                 return randomNbr.nextInt(minSize);
-
+            case 2:
+                // Pohl : Check for the sum of vailableNbr for all tied squares, return the minimal one
+                int minIndex = 0;
+                int minAdjSum = this.AvailableAdj.getFirst().getNextLevelAvailableNbrSum();
+                for (int i = 1; i < minSize; i++) {
+                    int newMin = this.AvailableAdj.get(i).getNextLevelAvailableNbrSum();
+                    if (newMin<minAdjSum)  {minIndex = i; minAdjSum = newMin;}
+                }
+                return minIndex;
+            case 3 :
+                // Roth
+                return 0;
             default : return 0;
         }
     }
@@ -82,17 +102,16 @@ public class ChessQuare implements Comparable<ChessQuare> {
         // Else, get the AvAdj with lowest AvAdj number
         this.AvailableAdj.sort(null);
 
-        // If there is more than 1 Square with the minimal number, choose randomly between them
+        // If there is more than 1 Square with the minimal number, choose using chooseMin
         int nbrMin = 0;
         while (nbrMin < this.AvailableAdj.size() &&
                 this.AvailableAdj.get(nbrMin).getVisited() == this.AvailableAdj.getFirst().getVisited())
         {nbrMin++;}
-        int toRemove;
+        int toRemove = 0;
         if (nbrMin > 1) {
             toRemove = this.chooseMin(nbrMin, choiceType);
             //System.out.println(toRemove);
         }
-        else {toRemove = 0;}
 
         return removeAdj(toRemove); // This will remove an element with minimal Available Adj
     }

@@ -26,36 +26,35 @@ public class SetupFrame extends JFrame implements ActionListener {
 
         // Components setup
         // Texts
-        this.labels = new JLabel[4];
-        for (int i = 0; i < 4; i++) {
+        this.labels = new JLabel[5];
+        for (int i = 0; i < 5; i++) {
             switch (i) {
-                case 0 :
-                    this.labels[i] = new JLabel("Width : ");
-                    break;
-                case 1 :
-                    this.labels[i] = new JLabel("Length : ");
-                    break;
-                case 2 :
-                    this.labels[i] = new JLabel("Starting X : ");
-                    break;
-                case 3 :
-                    this.labels[i] = new JLabel("Starting Y : ");
-                    break;
-                default:
-                    this.labels[i] = new JLabel("???");
+                case 0 : this.labels[i] = new JLabel("Width : "); break;
+                case 1 : this.labels[i] = new JLabel("Length : "); break;
+                case 2 : this.labels[i] = new JLabel("Starting X : "); break;
+                case 3 : this.labels[i] = new JLabel("Starting Y : "); break;
+                case 4 : this.labels[i] = new JLabel("Choice Type : "); break;
+                default: this.labels[i] = new JLabel("???"); break;
             }
             this.labels[i].setBounds(50, 20 + (i*60), 100, 50);
             this.add(this.labels[i]);
         }
 
         // Number Fields
-        this.spinners = new JSpinner[4];
+        this.spinners = new JSpinner[5];
         for (int i = 0; i < 4; i++) {
-            this.spinners[i] = new JSpinner(new SpinnerNumberModel(1, 1, 12, 1));
+            this.spinners[i] = new JSpinner(new SpinnerNumberModel(1, 1, 16, 1));
+            if (i==0||i==1) {
+                this.spinners[i].setValue(8);
+            }
             this.spinners[i].getEditor().setEnabled(false);
             this.spinners[i].setBounds(250, 20 + (i*60), 100, 50);
             this.add(this.spinners[i]);
         }
+        String[] choiceTypes= {"default", "random", "Pohl", "Roth"};
+        this.spinners[4] = new JSpinner(new SpinnerListModel(choiceTypes));
+        this.spinners[4].setBounds(250, 20 + (4*60), 100, 50);
+        this.add(this.spinners[4]);
 
         // Start Button
         this.playButton = new JButton("Start");
@@ -72,7 +71,13 @@ public class SetupFrame extends JFrame implements ActionListener {
         m = (Integer) this.spinners[1].getValue();
         x = (Integer) this.spinners[2].getValue();
         y = (Integer) this.spinners[3].getValue();
-        c = 0;
+        c = switch ((String) this.spinners[4].getValue()) {
+            case "default" -> 0;
+            case "random" -> 1;
+            case "Pohl" -> 2;
+            case "Roth" -> 3;
+            default -> 0;
+        };
         this.setVisible(false);
         this.mainBoard = new VisualBoard(n, m, x, y);
         this.mainBoard.startAnimation(c);
