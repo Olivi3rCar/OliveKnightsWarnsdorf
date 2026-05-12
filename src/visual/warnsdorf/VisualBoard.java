@@ -18,7 +18,7 @@ public class VisualBoard extends ChessBoard {
 
         // Visual size of the Squares in px
         int sqSize = 500 / (Math.max(n, m));
-        // Set Frame at First
+        // Set Frame at First Class Call (static)
         if (frame != null) {
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < m; j++) {
@@ -36,7 +36,6 @@ public class VisualBoard extends ChessBoard {
                 }
             }
         }
-
 
         // Get and Scale the Image if first Class call (static)
         if (knightImage == null) {
@@ -58,10 +57,12 @@ public class VisualBoard extends ChessBoard {
             drawPane.resetline(sqSize, x - 1, y - 1);
         }
         frame.getGlassPane().setVisible(true);
+        frame.repaint();
     }
 
-    @Override
-    protected ChessQuare step(ChessQuare Curr, int choiceType) {
+    protected boolean visualStep(int choiceType) {
+        ChessQuare Curr = this.Squares[this.Knight.getPosX()-1][this.Knight.getPosY()-1];
+        if (Curr.getVailableNbr() == 0) return false;
         // Uses Warnsdorf to make the knight take a step in the chessboard
         // First, make the choice of where to go depending on the current step
         ChessQuare Next = Curr.chooseSquare(choiceType);
@@ -71,7 +72,7 @@ public class VisualBoard extends ChessBoard {
         Knight.move(Next.getPosX(), Next.getPosY());
         if (choiceType != 1) {
             try {
-                Thread.sleep(150);
+                Thread.sleep(50);
             } catch (java.lang.InterruptedException Except) {
                 System.out.println("Interrupted Sleep");
             }
@@ -80,7 +81,7 @@ public class VisualBoard extends ChessBoard {
         moveLabel(Curr, Next);
         frame.repaint();
         drawPane.repaint();
-        return Next;
+        return true;
     }
 
     private void moveLabel(ChessQuare prev, ChessQuare next) {
@@ -90,7 +91,12 @@ public class VisualBoard extends ChessBoard {
         Vquares[next.getPosX() - 1][next.getPosY() - 1].panel.add(knightImage);
     }
 
-    public void repaintFrame() {
-        frame.repaint();
+    public void startAnimation(int choicetype) {
+        Timer timer = new Timer(10, e -> {
+            boolean status = visualStep(choicetype);
+            if (!status) {((Timer) e.getSource()).stop();}
+        });
+
+        timer.start();
     }
 }
