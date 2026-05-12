@@ -1,35 +1,43 @@
 package visual.warnsdorf;
+
 import warnsdorf.ChessBoard;
 import warnsdorf.ChessQuare;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class VisualBoard extends ChessBoard{
+public class VisualBoard extends ChessBoard {
 
-    static BoardFrame frame; // main Frame/Window
-    private VisualQuare[][] Vquares; // Matrix of visual squares to be used along the ChessQuare matrix
-    private final int sqSize; // Visual size of the Squares in px
-    static JLabel knightImage; // Loaded Image of the knight
-    private DrawingPane drawPane; // Pane to draw the line on
-
-    private final static Color visitedCol = new Color(0xFFFF00);
+    private static BoardFrame frame; // main Frame/Window
+    private static VisualQuare[][] Vquares; // Matrix of visual squares to be used along the ChessQuare matrix
+    private static JLabel knightImage; // Loaded Image of the knight
+    private static DrawingPane drawPane; // Pane to draw the line on
 
     public VisualBoard(int n, int m, int x, int y) {
         super(n, m, x, y);
 
-        // Set Frame
-        frame = new BoardFrame();
-        Vquares = new VisualQuare[n][m];
-        sqSize = 470/(Math.max(n, m));
-
-        // Fill the Array
-        for (int i = 0; i < n ; i++) {
-            for (int j = 0; j < m; j++) {
-                this.Vquares[i][j] = new VisualQuare(Squares[i][j], sqSize);
-                frame.addPanel(this.Vquares[i][j]);
+        // Visual size of the Squares in px
+        int sqSize = 500 / (Math.max(n, m));
+        // Set Frame at First
+        if (frame != null) {
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < m; j++) {
+                    Vquares[i][j].unvisits();
+                }
+            }
+        } else {
+            frame = new BoardFrame();
+            frame.setAlwaysOnTop(true);
+            // Fill the Array
+            Vquares = new VisualQuare[n][m];
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < m; j++) {
+                    Vquares[i][j] = new VisualQuare(Squares[i][j], sqSize);
+                    frame.addPanel(Vquares[i][j]);
+                }
             }
         }
+
 
         // Get and Scale the Image if first Class call (static)
         if (knightImage == null) {
@@ -42,12 +50,16 @@ public class VisualBoard extends ChessBoard{
 
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-        Vquares[x-1][y-1].panel.add(knightImage);
+        Vquares[x - 1][y - 1].panel.add(knightImage);
 
-        this.drawPane = new DrawingPane(sqSize);
-        this.drawPane.setVisible(true);
-        this.drawPane.followLine(x, y);
-        frame.setGlassPane(this.drawPane);
+        if (drawPane == null) {
+            drawPane = new DrawingPane(sqSize, x - 1, y - 1);
+            drawPane.followLine(x - 1, y - 1);
+            frame.setGlassPane(drawPane);
+        } else {
+            drawPane.resetline(sqSize, x - 1, y - 1);
+        }
+        frame.getGlassPane().setVisible(true);
     }
 
     @Override
@@ -59,19 +71,28 @@ public class VisualBoard extends ChessBoard{
         Next.visits();
         Next.removeVisited();
         Knight.move(Next.getPosX(), Next.getPosY());
-        try {Thread.sleep(10);}
-        catch (java.lang.InterruptedException Except) {System.out.println("Interrupted Sleep");}
+        if (choiceType != 1) {
+            try {
+                Thread.sleep(150);
+            } catch (java.lang.InterruptedException Except) {
+                System.out.println("Interrupted Sleep");
+            }
+        }
+        // Move the Knight image to appear on the good spot
         moveLabel(Curr, Next);
         frame.repaint();
-        this.drawPane.repaint();
+        drawPane.repaint();
         return Next;
     }
 
     private void moveLabel(ChessQuare prev, ChessQuare next) {
-        this.Vquares[prev.getPosX()-1][prev.getPosY()-1].panel.remove(knightImage);
-        this.Vquares[prev.getPosX()-1][prev.getPosY()-1].panel.setBackground(visitedCol);
-        this.drawPane.followLine(next.getPosX()-1, next.getPosY()-1);
-        this.Vquares[next.getPosX()-1][next.getPosY()-1].panel.add(knightImage);
+        Vquares[prev.getPosX() - 1][prev.getPosY() - 1].panel.remove(knightImage);
+        Vquares[prev.getPosX() - 1][prev.getPosY() - 1].visits();
+        drawPane.followLine(next.getPosX() - 1, next.getPosY() - 1);
+        Vquares[next.getPosX() - 1][next.getPosY() - 1].panel.add(knightImage);
     }
 
+    public void repaintFrame() {
+        frame.repaint();
+    }
 }

@@ -8,7 +8,7 @@ public class BoardFrame extends JFrame {
     public BoardFrame() {
         // Frame Setup
         this.setTitle("Warnsdorf's Knight's Tour");
-        this.setSize(500,500); this.setResizable(false);
+        this.setSize(510,530); this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         ImageIcon Img = new ImageIcon("knight.png");
         this.setIconImage(Img.getImage());
@@ -19,5 +19,4 @@ public class BoardFrame extends JFrame {
     public void addPanel(VisualQuare Vquare) {
         this.add(Vquare.panel);
     }
-
 }
