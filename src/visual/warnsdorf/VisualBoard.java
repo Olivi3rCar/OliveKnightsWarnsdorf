@@ -13,24 +13,28 @@ public class VisualBoard extends ChessBoard {
     private static JLabel knightImage; // Loaded Image of the knight
     private static DrawingPane drawPane; // Pane to draw the line on
 
+    private final int sizeX, sizeY, baseX, baseY;
+
     public VisualBoard(int n, int m, int x, int y) {
         super(n, m, x, y);
 
+        this.sizeX = n; this.sizeY = m;
+        this.baseX = x; this.baseY = y;
         // Visual size of the Squares in px
-        int sqSize = 500 / (Math.max(n, m));
+        int sqSize = 500 / (Math.max(this.sizeX, this.sizeY));
         // Set Frame at First Class Call (static)
         if (frame != null) {
-            for (int i = 0; i < n; i++) {
-                for (int j = 0; j < m; j++) {
+            for (int i = 0; i < this.sizeX; i++) {
+                for (int j = 0; j < this.sizeY; j++) {
                     Vquares[i][j].unvisits();
                 }
             }
         } else {
             frame = new BoardFrame();
             // Fill the Array
-            Vquares = new VisualQuare[n][m];
-            for (int i = 0; i < n; i++) {
-                for (int j = 0; j < m; j++) {
+            Vquares = new VisualQuare[this.sizeX][this.sizeY];
+            for (int i = 0; i < this.sizeX; i++) {
+                for (int j = 0; j < this.sizeY; j++) {
                     Vquares[i][j] = new VisualQuare(Squares[i][j], sqSize);
                     frame.addPanel(Vquares[i][j]);
                 }
@@ -91,8 +95,8 @@ public class VisualBoard extends ChessBoard {
         Vquares[next.getPosX() - 1][next.getPosY() - 1].panel.add(knightImage);
     }
 
-    public void startAnimation(int choicetype) {
-        Timer timer = new Timer(10, e -> {
+    public void startAnimation(int choicetype, int delay) {
+        Timer timer = new Timer(delay, e -> {
             boolean status = visualStep(choicetype);
             if (!status) {((Timer) e.getSource()).stop();}
         });
