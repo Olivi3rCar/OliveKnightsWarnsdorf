@@ -69,8 +69,8 @@ public class SetupFrame extends JFrame implements ActionListener {
         int n, m, x, y, c;
         n = (Integer) this.spinners[0].getValue();
         m = (Integer) this.spinners[1].getValue();
-        x = (Integer) this.spinners[2].getValue();
-        y = (Integer) this.spinners[3].getValue();
+        x = Math.min((Integer) this.spinners[2].getValue(), n);
+        y = Math.min((Integer) this.spinners[3].getValue(), m);
         c = switch ((String) this.spinners[4].getValue()) {
             case "default" -> 0;
             case "random" -> 1;
