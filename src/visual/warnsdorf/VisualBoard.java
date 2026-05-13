@@ -21,7 +21,7 @@ public class VisualBoard extends ChessBoard {
         this.sizeX = n; this.sizeY = m;
         this.baseX = x; this.baseY = y;
         // Visual size of the Squares in px
-        int sqSize = (int) (500 / (float) (Math.max(this.sizeX, this.sizeY)));
+        int sqSize = (int) (700 / (float) (Math.max(this.sizeX, this.sizeY)));
         // Set Frame at First Class Call (static)
         if (frame != null) {
             for (int i = 0; i < this.sizeX; i++) {
