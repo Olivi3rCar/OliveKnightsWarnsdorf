@@ -21,7 +21,7 @@ public class VisualBoard extends ChessBoard {
         this.sizeX = n; this.sizeY = m;
         this.baseX = x; this.baseY = y;
         // Visual size of the Squares in px
-        int sqSize = 500 / (Math.max(this.sizeX, this.sizeY));
+        int sqSize = (int) (500 / (float) (Math.max(this.sizeX, this.sizeY)));
         // Set Frame at First Class Call (static)
         if (frame != null) {
             for (int i = 0; i < this.sizeX; i++) {
@@ -30,7 +30,7 @@ public class VisualBoard extends ChessBoard {
                 }
             }
         } else {
-            frame = new BoardFrame();
+            frame = new BoardFrame(this.sizeX * sqSize, this.sizeY * sqSize);
             // Fill the Array
             Vquares = new VisualQuare[this.sizeX][this.sizeY];
             for (int i = 0; i < this.sizeX; i++) {
@@ -51,7 +51,7 @@ public class VisualBoard extends ChessBoard {
         }
 
         frame.setVisible(true);
-        Vquares[x - 1][y - 1].panel.add(knightImage);
+        Vquares[this.baseX - 1][this.baseY - 1].panel.add(knightImage);
 
         if (drawPane == null) {
             drawPane = new DrawingPane(sqSize, x - 1, y - 1);
@@ -64,12 +64,12 @@ public class VisualBoard extends ChessBoard {
         frame.repaint();
     }
 
-    protected boolean visualStep(int choiceType) {
+    protected boolean visualStep(int choiceType, int sizeX, int sizeY) {
         ChessQuare Curr = this.Squares[this.Knight.getPosX()-1][this.Knight.getPosY()-1];
         if (Curr.getVailableNbr() == 0) return false;
         // Uses Warnsdorf to make the knight take a step in the chessboard
         // First, make the choice of where to go depending on the current step
-        ChessQuare Next = Curr.chooseSquare(choiceType);
+        ChessQuare Next = Curr.chooseSquare(choiceType, sizeX, sizeY);
         // Move the Knight, set new square to visited, remove already visited from curr AvailableAdj
         Next.visits();
         Next.removeVisited();
@@ -97,7 +97,7 @@ public class VisualBoard extends ChessBoard {
 
     public void startAnimation(int choicetype, int delay) {
         Timer timer = new Timer(delay, e -> {
-            boolean status = visualStep(choicetype);
+            boolean status = visualStep(choicetype, this.sizeX, this.sizeY);
             if (!status) {((Timer) e.getSource()).stop();}
         });
 

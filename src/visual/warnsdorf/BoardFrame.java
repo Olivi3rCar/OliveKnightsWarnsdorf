@@ -5,10 +5,10 @@ import java.awt.*;
 
 public class BoardFrame extends JFrame {
 
-    public BoardFrame() {
+    public BoardFrame(int sizeX, int sizeY) {
         // Frame Setup
         this.setTitle("Warnsdorf's Knight's Tour");
-        this.setSize(510,530); this.setResizable(false);
+        this.setSize(sizeX + 12, sizeY + 35); this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         ImageIcon Img = new ImageIcon("knight.png");
         this.setIconImage(Img.getImage());

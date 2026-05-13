@@ -48,7 +48,7 @@ public class SetupFrame extends JFrame implements ActionListener {
         // Number Fields
         this.spinners = new JSpinner[6];
         for (int i = 0; i < 4; i++) {
-            this.spinners[i] = new JSpinner(new SpinnerNumberModel(1, 1, 16, 1));
+            this.spinners[i] = new JSpinner(new SpinnerNumberModel(1, 1, 1000, 1));
             if (i==0||i==1) {
                 this.spinners[i].setValue(8);
             }
@@ -60,7 +60,7 @@ public class SetupFrame extends JFrame implements ActionListener {
         this.spinners[4] = new JSpinner(new SpinnerListModel(choiceTypes));
         this.spinners[4].setBounds(size - globWidth - offX, offY + (4*distY), globWidth, globHeight);
 
-        this.spinners[5] = new JSpinner(new SpinnerNumberModel(40, 1, 150, 1));
+        this.spinners[5] = new JSpinner(new SpinnerNumberModel(20, 0, 1000, 10));
         this.spinners[5].setBounds(size - globWidth - offX, offY + (5*distY), globWidth, globHeight);
         this.add(this.spinners[4]); this.add(this.spinners[5]);
 

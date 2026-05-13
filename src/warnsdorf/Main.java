@@ -25,7 +25,7 @@ public class Main {
 
         ChessBoard Board = new ChessBoard(n, m, x, y);
 
-        while (!Board.warnsdorf(c)) {
+        while (!Board.warnsdorf(c, n, m)) {
             //Board.displayNonVisited();
             Board = new ChessBoard(n, m, x, y);
             tries++;

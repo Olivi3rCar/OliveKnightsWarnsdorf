@@ -59,9 +59,18 @@ public class ChessQuare implements Comparable<ChessQuare> {
         // Useful for Pohl's Method
         int sum = 0;
         for (ChessQuare chessQuare : this.AvailableAdj) {
+            chessQuare.removeVisited();
             sum += chessQuare.getVailableNbr();
         }
         return sum;
+    }
+
+    public float getDistance(int boardSizeX, int boardSizeY) {
+        // Useful for Roth's method, uses Euclidean distance;
+        return (float) Math.sqrt(
+                Math.pow((((double) (boardSizeX+1) / 2) - this.posX), 2) +
+                        Math.pow((((double) (boardSizeY+1)/ 2) - this.posY), 2)
+        );
     }
 
     // Comparison function based on len of AvailableAdj
@@ -70,9 +79,10 @@ public class ChessQuare implements Comparable<ChessQuare> {
         return Integer.compare(this.getVailableNbr(),other.getVailableNbr());
     }
 
-    public int chooseMin(int minSize, int choiceType) {
+    public int chooseMin(int minSize, int choiceType, int sizeX, int sizeY) {
         // Return the choice made between 2 or more squares
         // To be called only if more than 1 square has the minimal getVailableNbr
+        int minIndex;
         switch (choiceType) {
             case 1 :
                 // Random
@@ -80,7 +90,7 @@ public class ChessQuare implements Comparable<ChessQuare> {
                 return randomNbr.nextInt(minSize);
             case 2:
                 // Pohl : Check for the sum of vailableNbr for all tied squares, return the minimal one
-                int minIndex = 0;
+                minIndex = 0;
                 int minAdjSum = this.AvailableAdj.getFirst().getNextLevelAvailableNbrSum();
                 for (int i = 1; i < minSize; i++) {
                     int newMin = this.AvailableAdj.get(i).getNextLevelAvailableNbrSum();
@@ -88,28 +98,37 @@ public class ChessQuare implements Comparable<ChessQuare> {
                 }
                 return minIndex;
             case 3 :
-                // Roth
-                return 0;
+                // Roth : Check for the furthest square from the center of the board, return the minimal one
+                minIndex = 0;
+                float maxDist = this.AvailableAdj.getFirst().getDistance(sizeX, sizeY);
+                for (int i = 1; i < minSize; i++) {
+                    float newMax = this.AvailableAdj.get(i).getDistance(sizeX, sizeY);
+                    if (newMax>maxDist)  {minIndex = i; maxDist = newMax;}
+                }
+                return minIndex;
             default : return 0;
         }
     }
     // Removal and return of the element with lowest available adjacent squares
-    public ChessQuare chooseSquare(int choiceType) {
+    public ChessQuare chooseSquare(int choiceType, int sizeX, int sizeY) {
         // This assumes AvailableAdj is Not empty
         // If there is only one available Adjacent square, move to it
         if (this.AvailableAdj.size() == 1) {return removeAdj(0);}
 
         // Else, get the AvAdj with lowest AvAdj number
+        for (ChessQuare chessQuare : this.AvailableAdj) {
+            chessQuare.removeVisited();
+        }
         this.AvailableAdj.sort(null);
 
         // If there is more than 1 Square with the minimal number, choose using chooseMin
         int nbrMin = 0;
         while (nbrMin < this.AvailableAdj.size() &&
-                this.AvailableAdj.get(nbrMin).getVisited() == this.AvailableAdj.getFirst().getVisited())
+                this.AvailableAdj.get(nbrMin).getVailableNbr() == this.AvailableAdj.getFirst().getVailableNbr())
         {nbrMin++;}
         int toRemove = 0;
         if (nbrMin > 1) {
-            toRemove = this.chooseMin(nbrMin, choiceType);
+            toRemove = this.chooseMin(nbrMin, choiceType, sizeX, sizeY);
             //System.out.println(toRemove);
         }
 
@@ -129,7 +148,4 @@ public class ChessQuare implements Comparable<ChessQuare> {
         }
     }
 
-    public boolean getWhite() {
-        return this.isWhite;
-    }
 }

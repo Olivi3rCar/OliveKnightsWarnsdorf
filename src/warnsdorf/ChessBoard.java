@@ -101,10 +101,10 @@ public class ChessBoard {
 
     // ---------- Warnsdorf -----------
 
-    protected ChessQuare step(ChessQuare Curr, int choiceType) {
+    protected ChessQuare step(ChessQuare Curr, int choiceType, int sizeX, int sizeY) {
         // Uses Warnsdorf to make the knight take a step in the chessboard
         // First, make the choice of where to go depending on the current step
-        ChessQuare Next = Curr.chooseSquare(choiceType);
+        ChessQuare Next = Curr.chooseSquare(choiceType, sizeX, sizeY);
         // Move the Knight, set new square to visited, remove already visited from curr AvailableAdj
         Next.visits();
         Next.removeVisited();
@@ -112,7 +112,7 @@ public class ChessBoard {
         return Next;
     }
 
-    public boolean warnsdorf(int choiceType, boolean displays) {
+    public boolean warnsdorf(int choiceType, boolean displays, int sizeX, int sizeY) {
         // Implementation of Warnsdorf's Rule :
         // Always go to the square with the lowest number of available adjacent Squares.
         // Starts on the Knight's first space
@@ -122,7 +122,7 @@ public class ChessBoard {
         }
         // As long as there is movement possible, take a step
         while (Position.getVailableNbr() > 0) {
-            Position = this.step(Position, choiceType);
+            Position = this.step(Position, choiceType, sizeX, sizeY);
             if (displays) {
                 System.out.println("Moved to :" + this.Knight.shortKnightPos());
             }
@@ -135,11 +135,11 @@ public class ChessBoard {
         return this.allVisited();
     }
 
-    public boolean warnsdorf(int choicetype) {
-        return warnsdorf(choicetype, false);
+    public boolean warnsdorf(int choicetype, int sizeX, int sizeY) {
+        return warnsdorf(choicetype, false, sizeX, sizeY);
     }
 
     public boolean warnsdorf() {
-        return warnsdorf(0, false);
+        return warnsdorf(0, false, 0,0);
     }
 }
